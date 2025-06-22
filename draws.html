@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="no-scrollbar">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PIXEL</title>
+        <style>
+            @font-face {
+                font-family: 'abordage';
+                src: url('./fonts/Abordage-Regular.woff2') format('woff2'),
+                     url('./fonts/Abordage-Regular.woff') format('woff'),
+                     url('./fonts/Abordage-Regular.otf') format('otf');
+                font-weight: normal;
+                font-style: normal;
+            }       
+            @font-face {
+                font-family: 'VG5000 Regular';
+                src: url('./fonts/VG5000-Regular_web.woff2') format('woff2'),
+                     url('./fonts/VG5000-Regular_web.woff') format('woff'),
+                     url('./fonts/VG5000-Regular_web.otf') format('otf');
+                font-weight: normal;
+                font-style: normal;
+            }
+             @font-face {
+                font-family: 'DOT Bouwhuis TRIAL';
+                src: url('./fonts/DOTBouwhuisTRIAL-Bold.ttf') format('ttf');
+                src: url('./fonts/DOTBouwhuisTRIAL-Bold.woff2') format('woff2');
+                font-weight: 700;
+                font-style: normal;
+            }
+            @font-face {
+                font-family: 'DOT Bouwhuis TRIAL';
+                src: url('./fonts/DOTBouwhuisTRIAL-Regular.ttf') format('ttf');
+                src: url('./fonts/DOTBouwhuisTRIAL-Regular.woff2') format('woff2');
+                font-weight: 400;
+                font-style: normal;
+            }
+            @font-face {
+                font-family: 'DOT Bouwhuis TRIAL';
+                src: url('./fonts/DOTBouwhuisTRIAL-Thin.ttf') format('ttf');
+                src: url('./fonts/DOTBouwhuisTRIAL-Thin.woff2') format('woff2');
+                font-weight: 300;
+                font-style: normal;
+            }
+            :root {
+                --color2: #323333;
+                --color1: #F9F8F6;
+                --color2: #f27b68;
+                --color1: #E8E0C9;
+                --color2: #202020;
+                --color1: #F4F0EC;
+                --color2: #1C1916;
+                --color1: #ECEBE1;
+            }
+            *, *::before, *::after {
+            box-sizing: border-box;
+            }
+
+            ::selection {
+                background: #E99841;  /* 自定义背景色 */
+                color: #ffffff;       /* 自定义字体颜色 */
+            }
+            a {
+                text-decoration: none; /* 取消下划线 */
+                color: inherit;        /* 继承父元素颜色，不是默认蓝 */
+                cursor: pointer;       /* 鼠标变成手型，提示可点击 */
+            }
+            .top:hover {
+                text-decoration: underline; /* 鼠标悬停时显示下划线 */
+                color: #eed3b7;              /* 或你喜欢的颜色 */
+                cursor: pointer;
+            }
+            
+            html{background-color: var(--color1);}   
+            header{
+                font-size: 2.5vw;
+                font-weight: normal;
+                font-family:"DOT Bouwhuis TRIAL";
+                color: var(--color2);
+               
+                top: -20px;
+                left: 0;
+                position:fixed;
+                width: 100%;
+                padding-bottom: 3px;
+                background-color: var(--color1);
+
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                /* align-content: space-between; */
+              
+                 z-index: 1;
+                 display: flex;
+                /* flex-wrap: wrap; */
+                justify-content: space-between;
+            }
+            .left{
+                margin-left: 10px;
+            }
+            .right{
+                margin-right: 10px;
+            }
+            header::after {
+                z-index: 1;
+                 content: "";
+                    position: absolute;
+                    bottom: 0;
+                    /* left: 2%; */
+                    width: 100%;
+                    border-bottom: 1.5px solid var(--color2);
+                }
+            .name{
+                padding-top: 20px;
+            }
+         
+            .outer{
+                width: 96%;
+                display: flex;
+                justify-items: auto;
+                gap:20px 20px;
+                margin:16px auto;
+                 flex-wrap: wrap;}
+
+            .blur{
+                filter: blur(6px);
+                pointer-events: none; /* 禁止交互 */
+                transition: filter 0.3s;
+                transition-timing-function:ease-out;
+                z-index: 1;
+            }
+         
+            .date{
+                font-size:1vw;
+                /* vertical-align: middle; */
+                font-family:"VG5000 Regular";
+                /* font-style: italic; */
+                /* font-weight: lighter; */
+                margin: auto;
+                /* visibility: hidden; */
+                padding-top: 5px;
+              
+            }
+            img{
+                object-fit: contain;
+                width:100%;
+            }
+            .card{
+                aspect-ratio: 8/9.3;
+                background-color: var(--color1);
+
+                border-radius:1px; 
+                border: 1.5px solid var(--color2); 
+                
+                /* box-shadow: 0px 0px 3px #E99841; */
+                /* 隐藏图片上边圆角 */
+                overflow: hidden;
+                transition: transform 0.3s ease;
+             
+                /* flex-grow: 1;
+                flex-shrink: 1; */
+                /* 每行放五个 */
+                flex-basis: calc((100% - 20px * 3 ) / 4);
+
+                display: flex;
+                flex-direction: column;
+                /* flex-wrap: wrap; */
+                /* 保证图片贴住上边，因为默认是strech而图片没给高度会居中 */
+                align-items: flex-start;
+                /* 让日期文字垂直不留空，方便居中 */
+                align-content: flex-start;
+                /* 让hover里的向上移动生效 */
+                position: relative;
+                color: var(--color2);
+            }
+            .card:hover:not(.selected){
+                box-shadow: 0px 0px 3px var(--color2);
+                /* border: 1.5px solid rgb(232, 232, 232); */
+                cursor: pointer;
+                transform: translatey(1px);
+                /* top: -0.5px; */
+            }
+           
+             .space{height: calc(3vw - 6px);}
+             @media (max-width:900px) {
+                .card{
+                    flex-basis: calc(50% - 10px);
+                }
+                .date {font-size: 2vw; }
+                .name{padding-top: 5px; }
+                header{font-size: 4vw;top: -5px;padding-bottom: 3px;}
+                .space{height:calc(5vw - 12px);}
+            }
+            .selected{
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                    width: 90vw;          /* 优先宽度 70% */
+                    max-height: 100vh;     /* 最大高度不超过 90% 屏幕 */
+                    height: auto;         /* 高度自适应 */
+
+                    max-width: calc(100vh * 0.72); /* 限制宽度在高不够时自适应缩小 */
+                 flex-basis: calc(60% - 4.8px);
+                z-index: 2;
+                border-radius: 10px;
+                font-size:50px;
+
+            }
+            .selected .date{font-size: 15px;}
+            .selected img.grid-overlay {
+                position: absolute;
+                /* top: 0; */
+                /* left: 0; */
+                width: 100%;  /* 和父容器一样大 */
+                /* height: 100%; */
+                pointer-events: none;  /* 让点击穿透，不影响交互 */
+                user-select: none;     /* 防止选中 */
+                /* image-rendering: pixelated;  */
+                z-index: 10;  /* 保证在原图上方 */
+            }
+            
+         
+            /* 只隐藏滚动条，不禁用滚动 */
+            .no-scrollbar {
+                overflow:auto;
+                -ms-overflow-style: none;  /* IE 和 Edge */
+                scrollbar-width: none;     /* Firefox */
+            }
+
+            .no-scrollbar::-webkit-scrollbar {
+                display: none;             /* Chrome, Safari */
+            }
+               .no-scroll {
+                overflow: hidden; 
+                /* padding-right: 15px; */
+            }
+
+             .contact{
+                margin-top: .6vw;
+                position:fixed;
+                padding-left: 0.5vw;
+                padding-right: 0.5vw;
+                /* margin-left: auto; */
+                font-size: 1.5vw;
+                color: #1c1616;
+                right: 10px;
+                background-color: #ecebe1;
+                border: 1.5px solid #1c1616; 
+                display: none;
+                line-height: .3;
+            }
+            .contact.show{
+                display: block; /* 悬停时显示 */
+            }
+            video{
+                margin-top: 40vw;
+                border: 1.5px solid #1C1916; 
+                border-radius:2px; 
+                width: 22vw;
+                display: block;
+                margin-left: auto;
+            }
+        </style>
+    </head>
+    <body class="no-scrollbar">
+        <header>
+            <a href="http://127.0.0.1:5500/homepage.html" class="name left top">back</a>
+            <div class="name">ordinary days</div>
+            <div class="top right name" id="contact-toggle">
+                contact
+                <div class="contact" id="contact-info">
+                    <p>zhy0909hhh@gmail.com</p>
+                    <p>ins yixijiji</p>
+                    <p>+31 (0)6 16378655</p>
+                </div>
+            </div>
+            <!-- <div class="line"></div> -->
+            <!-- <hr class="clean-line"> -->
+        </header>
+        <div class='space'></div>
+     
+      <div class="outer">
+        
+          <div class="card"> 
+            <img src="./homepage/draws/25.6.20.png" alt="" >
+            <div class="date"> </div>
+          </div>
+          <div class="card"> 
+            <img src="./homepage/draws/25.6.18.png" alt="" >
+            <div class="date"> </div>
+          </div>
+          <div class="card"> 
+            <img src="./homepage/draws/25.6.16.png" alt="" >
+            <div class="date"> </div>
+          </div>
+          <div class="card"> 
+            <img src="./homepage/draws/25.6.14.png" alt="" >
+            <div class="date"> </div>
+          </div>
+          <div class="card"> 
+            <img src="./homepage/draws/25.6.13.png" alt="" >
+            <div class="date"> </div>
+          </div>
+           <div class="card"> 
+                <img src="./homepage/draws/25.6.11.png" alt="" >
+                <div class="date"></div>
+          </div>
+          <div class="card"> 
+            <img src="./homepage/draws/25.6.10.png" alt="" >
+            <div class="date"> </div>
+          </div>
+           <div class="card"> 
+                <img src="./homepage/draws/25.6.9.png" alt="" >
+                <div class="date"></div>
+          </div>
+          <div class="card"> 
+            <img src="./homepage/draws/25.6.7.png" alt="" >
+            <div class="date"> </div>
+          </div>
+           <div class="card"> 
+                <img src="./homepage/draws/25.6.6.png" alt="" >
+                <div class="date"></div>
+          </div>
+          <div class="card"> 
+            <img src="./homepage/draws/25.6.5.png" alt="" >
+            <div class="date"> </div>
+          </div>
+           <div class="card"> 
+                <img src="./homepage/draws/25.6.3.png" alt="" >
+                <div class="date"></div>
+          </div>
+          <div class="card"> 
+            <img src="./homepage/draws/25.6.1.png" alt="" >
+            <div class="date"> </div>
+          </div>
+           <div class="card"> 
+                <img src="./homepage/draws/25.5.31.png" alt="" >
+                <div class="date"></div>
+          </div>
+          <div class="card"> 
+                <img src="./homepage/draws/25.5.29.png" alt="" >
+                <div class="date"></div>
+          </div>
+          <div class="card"> 
+                <img src="./homepage/draws/25.5.28.png" alt="" >
+                <div class="date"></div>
+          </div>
+          <div class="card"> 
+                <img src="./homepage/draws/25.5.26.png" alt="" >
+                <div class="date"></div>
+          </div>
+          <div class="card"> 
+                <img src="./homepage/draws/25.5.25.png" alt="" >
+                <div class="date"></div>
+          </div>
+           <div class="card"> 
+            <img src="./homepage/draws/25.5.24.png" alt="" >
+            <div class="date"> </div>
+          </div>
+          <div class="card"> 
+                <img src="./homepage/draws/25.5.23.png" alt="" >
+                <div class="date"></div>
+          </div>
+          <div class="card"> 
+                <img src="./homepage/draws/25.5.21.png" alt="" >
+                <div class="date"></div>
+          </div>
+         <div class="card"> 
+            <img src="./homepage/draws/25.5.20.png" alt="" >
+            <div class="date"> </div>
+         </div>
+          <div class="card"> 
+                <img src="./homepage/draws/25.5.18.png" alt="" >
+                <div class="date"></div>
+          </div>
+          <div class="card"> 
+                <img src="./homepage/draws/25.5.17.png" alt="" >
+                <div class="date"></div>
+          </div>
+         <div class="card"> 
+            <img src="./homepage/draws/25.5.14.jpg" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.5.13.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.5.11.PNG" alt="" >
+            <div class="date"></div>
+        </div>
+         <div class="card"> 
+            <img src="./homepage/draws/25.5.9.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.5.7.png" alt="">
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.5.6.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.5.4.jpg" alt="" >
+            <div class="date"></div>
+        </div>
+
+        <div class="card"> 
+            <img src="./homepage/draws/25.5.2.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.5.1.png" alt="">
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.4.30.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.4.28.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.4.27.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.4.26.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.4.25.png" alt="">
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.4.23.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.4.22.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.4.21.png" alt="" >
+            <div class="date"></div>
+        </div>
+
+        <div class="card"> 
+            <img src="./homepage/draws/25.4.20.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.4.19.png" alt="">
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.4.17.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.4.15.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.4.14.png" alt="" >
+            <div class="date"></div>
+        </div>
+
+        <div class="card"> 
+            <img src="./homepage/draws/25.4.13.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.4.11.png" alt="">
+            <div class="date"></div>
+        </div>
+
+         <div class="card"> 
+            <img src="./homepage/draws/25.4.9.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.4.8.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.4.7.png" alt="" >
+            <div class="date"></div>
+        </div>
+
+        <div class="card"> 
+            <img src="./homepage/draws/25.4.6.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.4.4.png" alt="">
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.4.3.png" alt="" >
+            <div class="date"></div>
+        </div>
+           <div class="card"> 
+            <img src="./homepage/draws/25.4.2.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.4.1.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.3.30.png" alt="" >
+            <div class="date"></div>
+        </div>
+
+        <div class="card"> 
+            <img src="./homepage/draws/25.3.29.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.3.27.png" alt="">
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.3.26.png" alt="" >
+            <div class="date"></div>
+        </div>
+         <div class="card"> 
+            <img src="./homepage/draws/25.3.24.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.3.23.png" alt="">
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.3.22.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.3.21.png" alt="" >
+            <div class="date"></div>
+        </div>
+          <div class="card"> 
+            <img src="./homepage/draws/25.3.19.png" alt="" >
+            <div class="date"></div>
+        </div>
+
+        <div class="card"> 
+            <img src="./homepage/draws/25.3.17.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.3.16.png" alt="">
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.3.15.png" alt="" >
+            <div class="date"></div>
+        </div>
+         <div class="card"> 
+            <img src="./homepage/draws/25.3.14.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.3.13.png" alt="">
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.3.11.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.3.10.png" alt="" >
+            <div class="date"></div>
+        </div>
+    
+          <div class="card"> 
+            <img src="./homepage/draws/25.3.9.png" alt="" >
+            <div class="date"></div>
+        </div>
+
+        <div class="card"> 
+            <img src="./homepage/draws/25.3.7.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.3.6.png" alt="">
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.3.5.png" alt="" >
+            <div class="date"></div>
+        </div>
+         <div class="card"> 
+            <img src="./homepage/draws/25.3.4.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.3.3.png" alt="">
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.3.2.png" alt="" >
+            <div class="date"></div>
+        </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.3.1.png" alt="" >
+            <div class="date"></div>
+        </div>
+        
+        
+       
+      </div>
+      <script>
+        const cards = document.querySelectorAll('.card');
+        const outer = document.querySelector('.outer');
+        const header = document.querySelector('header');
+
+        let selectedCard = null;
+
+        cards.forEach(card => {
+            const img = card.querySelector('img');
+            const dateDiv = card.querySelector('.date');
+
+            if (img && dateDiv) {
+                const src = img.getAttribute('src');
+                const fileName = src.match(/([^\/]+)(?=\.\w+$)/)[0];
+                dateDiv.textContent = fileName.replace(/_/g, '.');
+            }
+
+            card.onclick = function (e) {
+                e.stopPropagation();
+
+                // 如果已有选中的卡片，先清除
+                if (selectedCard) {
+                    // selectedCard.remove();
+                    outer.classList.remove('blur');
+                    header.classList.remove('blur');
+                    document.body.classList.remove('no-scroll');
+                    document.documentElement.classList.remove('no-scroll');
+                    document.body.classList.remove('no-scroll');
+                    selectedCard = null;
+                    return;
+                }
+
+                // 克隆当前卡片
+                const clone = card.cloneNode(true);
+                clone.classList.add('selected');
+                     // 创建一个新的图片元素
+                    const img = document.createElement('img');
+                    img.src = './homepage/draws/g2.PNG';  // 替换成你想插入的图片地址
+                    // img.alt = 'description';         // 可选，图片描述
+                    img.classList.add('grid-overlay');
+                    // 把图片插入到clone的第一个子元素位置
+                    clone.insertBefore(img, clone.firstChild);
+
+                // 点击克隆卡片关闭
+                clone.onclick = function (e) {
+                    e.stopPropagation();
+                    clone.remove();
+                    outer.classList.remove('blur');
+                    header.classList.remove('blur');
+                    document.body.classList.remove('no-scroll');
+                    document.documentElement.classList.remove('no-scroll');
+                    document.body.classList.remove('no-scroll');
+                    selectedCard = null;
+                };
+
+                document.body.appendChild(clone);
+                outer.classList.add('blur');
+                header.classList.add('blur');
+                document.body.classList.add('no-scroll');
+                document.documentElement.classList.add('no-scroll');
+                document.body.classList.add('no-scroll');
+                selectedCard = clone;
+                  // 设置初始样式（透明、缩小）
+                clone.style.opacity = '0';
+                clone.style.transition = 'opacity 0.2s ease, transform 0.2s ease-out';
+
+                // 下一帧再触发过渡到目标样式（完全显示、正常大小）
+                requestAnimationFrame(() => {
+                    clone.style.opacity = '1';
+                });
+
+                
+            };
+        });
+
+        // 点击空白区域关闭选中
+        document.body.onclick = () => {
+            if (selectedCard) {
+                selectedCard.remove();
+                outer.classList.remove('blur');
+                header.classList.remove('blur');
+                document.body.classList.remove('no-scroll');
+                document.documentElement.classList.remove('no-scroll');
+                document.body.classList.remove('no-scroll');
+                selectedCard = null;
+            }
+        };
+
+        // contact按钮
+            document.getElementById('contact-toggle').addEventListener('click', function (event) {
+                const contactBox = document.getElementById('contact-info');
+                contactBox.classList.toggle('show');
+                event.stopPropagation(); // 阻止事件冒泡到 body
+            });
+
+            document.addEventListener('click', function (event) {
+                const contactBox = document.getElementById('contact-info');
+                const contactToggle = document.getElementById('contact-toggle');
+                 // 如果点击位置不在 contact 区域和按钮内，则关闭
+                if (!contactToggle.contains(event.target)) {
+                    contactBox.classList.remove('show');
+                }
+            });
+
+    
+</script>
+    </body> 
+</html>

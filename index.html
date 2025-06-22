@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <title>PIXEL</title>
+        <style>
+            body{
+                background-image:url("/homepage/projects/bkg.jpg");
+                background-size: 100%;
+                background-repeat: no-repeat;
+                background-attachment: scroll;
+                min-height: 95vw; /* 高度至少是视口高度 */
+
+                color: #E99841;
+                font-size: 2.5vw;
+                font-family:"DOT Bouwhuis TRIAL";
+            }
+            ::selection {
+                background: #E99841;  /* 自定义背景色 */
+                color: #ffffff;       /* 自定义字体颜色 */
+            }
+            header{
+                top: 0; 
+                left: 0;
+                position:fixed;
+                width: 100%;
+                display: flex;
+                /* flex-wrap: wrap; */
+                justify-content: space-between;
+                /* align-content: space-between; */
+            }
+            .left{
+                margin-left: 10px;
+            }
+            .right{
+                margin-right: 10px;
+            }
+            a {
+                text-decoration: none; /* 取消下划线 */
+                color: inherit;        /* 继承父元素颜色，不是默认蓝 */
+                cursor: pointer;       /* 鼠标变成手型，提示可点击 */
+                transition: transform 0.3s ease;
+                display: block; /* 否则移动不生效 */
+            }
+            .top:hover {
+                text-decoration: underline; /* 鼠标悬停时显示下划线 */
+                color: #eed3b7;              /* 或你喜欢的颜色 */
+                cursor: pointer;
+            }
+            a:hover {
+                text-decoration: underline; /* 鼠标悬停时显示下划线 */
+                color: #eed3b7;              /* 或你喜欢的颜色 */
+                transform: translateX(10px);
+            }
+         
+            .outer{
+                font-size: 9vw;
+                /* font-weight: bold; */
+                position:absolute;
+                left: 40vw;
+                top: 50vw;
+                
+                /* padding-top: 500px;
+                padding-left: 400px; */
+                /* column-count: 4;
+                column-gap: 4%; */
+                /* background-color: gray; */
+            }
+       
+            video{
+                width: 100%; 
+            }
+            img{width: 100%;}
+
+            .contact{
+                margin-top: .6vw;
+                position:fixed;
+                padding-left: 0.5vw;
+                padding-right: 0.5vw;
+                /* margin-left: auto; */
+                font-size: 1.5vw;
+                color: #1c1616;
+                right: 10px;
+                background-color: #ecebe1;
+                border: 1.5px solid #1c1616; 
+                display: none;
+                line-height: .3;
+            }
+            .contact.show{
+                display: block; /* 悬停时显示 */
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="top left">more</div>
+            <div class="top center">menu</div>
+            <div class="top right" id="contact-toggle">
+                contact
+                <div class="contact" id="contact-info">
+                    <p>zhy0909hhh@gmail.com</p>
+                    <p>ins yixijiji</p>
+                    <p>+31 (0)6 16378655</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="outer">
+            <a href="https://artorias55.github.io/pixel/" class="vis">
+                 Visuals
+            </a>
+            <a href="https://artorias55.github.io/pixel/" class="ill">
+                 Illustrations
+            </a>
+            <a href="http://127.0.0.1:5500/project.html" class="pro">
+                 Projects
+            </a>
+        </div>
+         <script>
+            // contact按钮
+            document.getElementById('contact-toggle').addEventListener('click', function (event) {
+                const contactBox = document.getElementById('contact-info');
+                contactBox.classList.toggle('show');
+                event.stopPropagation(); // 阻止事件冒泡到 body
+            });
+
+            document.addEventListener('click', function (event) {
+                const contactBox = document.getElementById('contact-info');
+                const contactToggle = document.getElementById('contact-toggle');
+                 // 如果点击位置不在 contact 区域和按钮内，则关闭
+                if (!contactToggle.contains(event.target)) {
+                    contactBox.classList.remove('show');
+                }
+            });
+         </script>
+    </body> 
+</html>

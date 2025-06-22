@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <title>PIXEL</title>
+        <style>
+             *, *::before, *::after {
+            box-sizing: border-box;
+            }
+            body{
+                background-color: #ECEBE1;
+                color: #1C1916;
+                font-size: 2.5vw;
+                font-family:"DOT Bouwhuis TRIAL";
+            }
+            ::selection {
+                background: #E99841;  /* 自定义背景色 */
+                color: #ffffff;       /* 自定义字体颜色 */
+            }
+            /* 导航栏 */
+            header{
+                top: 0; 
+                left: 0;
+                position:fixed;
+                width: 100%;
+                display: flex;
+                /* flex-wrap: wrap; */
+                justify-content: space-between;
+                /* align-content: space-between; */
+                z-index: 1000; /* 必须高于所有内容 */
+            }
+            .left{
+                margin-left: 10px;
+            }
+            .right{
+                margin-right: 10px;
+                position: relative;
+            }
+            
+            a {
+                text-decoration: none; /* 取消下划线 */
+                color: inherit;        /* 继承父元素颜色，不是默认蓝 */
+                cursor: pointer;       /* 鼠标变成手型，提示可点击 */
+                transition: transform 0.3s ease;
+                display: block; 否则移动不生效
+            }
+            .top:hover {
+                text-decoration: underline; /* 鼠标悬停时显示下划线 */
+                color: #eed3b7;              /* 或你喜欢的颜色 */
+                cursor: pointer;
+            }
+            /* 测试对齐辅助线 */
+            /* .left, .outer {
+                border: 1px dashed red;
+            } */
+         
+            .outer{
+                margin-left: 2px;
+                margin-right: 2px;
+                /* padding-left: 30vw; */
+                padding-top: 8vw;
+                font-size: 9vw;
+                /* font-weight: bold; */
+                column-count: 3;
+                column-gap: calc( (100% - 75vw) / 2 ); 
+            }
+            /* 避免column自动换行切开card */
+            .card {
+                break-inside: avoid;
+                page-break-inside: avoid; /* 兼容旧浏览器 */
+                -webkit-column-break-inside: avoid; /* 兼容 Safari */
+                /* z-index: auto; */
+            }
+            .card{ 
+                transition: transform 0.3s ease;
+                position: relative;
+            }
+            .name{
+                font-size: 6vw;
+                margin-left: -.3vw;
+                padding-bottom: .7vw;
+            }            
+            .date{ 
+                width:25vw;
+                font-size: 1.2vw;
+                font-family:PP Nikkei Pacific ;
+                margin-top: -.5vw;
+                /* padding-bottom: 5VW; */
+            }
+            .space{height: 5vw;}
+            .wrapper{
+                position: relative;
+            }
+
+            img{
+                border: 1.5px solid #1C1916; 
+                border-radius:2px; 
+                width: 25vw;
+            }
+            .card:hover img{
+                box-shadow: 0px 0px 3px #1c1916;
+            }
+            .card:hover{cursor: pointer;}
+        
+
+            /* 切换gif悬停 */
+            .hover-img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                opacity: 0;
+            }
+
+                .card:hover .hover-img {
+                opacity: 1;
+            }
+
+                .card:hover .default-img {
+                opacity: 0;
+            }
+            .contact{
+                margin-top: .6vw;
+                position:fixed;
+                padding-left: 0.5vw;
+                padding-right: 0.5vw;
+                /* margin-left: auto; */
+                font-size: 1.5vw;
+                color: #1c1616;
+                right: 10px;
+                background-color: #ecebe1;
+                border: 1.5px solid #1c1616; 
+                display: none;
+                line-height: .3;
+            }
+            .contact.show{
+                display: block; /* 悬停时显示 */
+            }
+            
+        </style>
+    </head>
+    <body>
+        <header>
+            <a href="http://127.0.0.1:5500/homepage.html" class="top left">back</a>
+            <div class="top center">menu</div>  
+            <div class="top right" id="contact-toggle">
+                contact
+                <div class="contact" id="contact-info">
+                    <p>zhy0909hhh@gmail.com</p>
+                    <p>ins yixijiji</p>
+                    <p>+31 (0)6 16378655</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="outer">
+            <a href="http://127.0.0.1:5500/soundtoy.html" class="card"> 
+                <div class="name">A Soundtoy</div>
+                <div class="wrapper">
+                    <img src="./homepage/projects/toolssource/toyT/toyT.png_0016_toy-(2).png" class="default-img" alt="">
+                    <img src="./homepage/projects/toolssource/toyT/toyt.gif" class="hover-img" alt="">
+                </div>
+                <div class="date">Many behaviors in life that can be associated with "sound" are backgrounded by different styles of music, such as rock, jazz, ambient, electronic, etc. <br><br>2023 - 2024</div>
+            </a>
+            <div class="space"></div>
+
+            <div class="card"> 
+                <div class="name">Band Designs</div>
+                <div class="wrapper">
+                    <img src="./homepage/projects/toolssource/bandT/bandT_0015_band-(2).png" class="default-img" alt="" >
+                    <img src="./homepage/projects/toolssource/bandT/band.gif" class="hover-img" alt="">
+                </div>
+              
+                <div class="date">I started a band in 2021. We released our first EP in 2023 and I’ve been responsible for the visuals of the band including Posters, Tour merch, Album and Visual jockey.<br><br>2021 - 2024
+
+                </div>
+            </div> 
+            <div class="space"></div>
+            
+            <a href="http://127.0.0.1:5500/continuum.html" class="card"> 
+                <div class="name" style="font-size: 5.5vw;">Continuum</div>
+                <div class="wrapper">
+                    <img src="./homepage/projects/toolssource/furnT/FurnT.png_0015_furn-(2).png" class="default-img" alt="" >
+                    <img src="./homepage/projects/toolssource/furnT/Furn (2).gif" class="hover-img" alt="">
+                </div>
+                <div class="date">Whether everyday objects can persistently provoke reflection on consumerism and artistic institutionalization within lived environments.<br><br>2024 - 2025
+                </div>
+            </a>
+            <div class="space"></div>
+
+            <a href="http://127.0.0.1:5500/april.html" class="card"> 
+                <div class="name" >Voice of the Apirl</div>
+                <div class="wrapper">
+                    <img src="./homepage/projects/toolssource/aprilT/april_0015_april-(2).png" class="default-img" alt="">
+                    <img src="./homepage/projects/toolssource/aprilT/april.gif" class="hover-img" alt="">
+                </div>
+                <div class="date">
+                    Spring in 2023, the Covid-19 was on the verge of breaking out in Shanghai. Under the government's dynamic clearing policy, a five-day closure evolved into a two-month-long shutdown. <br><br>2022 - 2023
+                </div>
+            </a>
+            <div class="space"></div>
+            
+            <a href="http://127.0.0.1:5500/cloud.html" class="card"> 
+                <div class="name">Veiled by Cloud and Mist</div>
+                <div class="wrapper">
+                    <img src="./homepage/projects/toolssource/cloudT/cloudT_0015_cloud-(2).png" class="default-img" alt="">
+                    <img src="./homepage/projects/toolssource/cloudT/CLOUD.gif" class="hover-img" alt="">
+                </div>
+                <div class="date">The Miao medical practice reflects the realities of marginalized healthcare systems, where folk doctors often serve as the last hope for those deemed "beyond help" by hospitals. <br><br>2023
+                </div>
+            </a>
+            <div class="space"></div>
+
+            <a href="http://127.0.0.1:5500/cube.html" class="card"> 
+                <div class="name">The Black Cube</div>
+                <div class="wrapper">
+                    <img src="./homepage/projects/toolssource/cubeT/cube_0001_cube-(16).png" class="default-img" alt="">
+                    <img src="./homepage/projects/toolssource/cubeT/cube3.gif" class="hover-img" alt="">
+                </div>
+                <div class="date">Through an on-site installation, the audience can interact with the visual imagery centered around the black cube. <br><br>2024
+                </div>
+            </a>
+            <div class="space"></div>
+        </div>
+         <script>
+            // 卡片悬停动画
+            document.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    const gif = card.querySelector('.hover-img');
+                    if (gif) {
+                        const src = gif.src;
+                        gif.src = '';
+                        gif.src = src;
+                    }
+                });
+            });
+
+            // contact按钮
+            document.getElementById('contact-toggle').addEventListener('click', function (event) {
+                const contactBox = document.getElementById('contact-info');
+                contactBox.classList.toggle('show');
+                event.stopPropagation(); // 阻止事件冒泡到 body
+            });
+
+            document.addEventListener('click', function (event) {
+                const contactBox = document.getElementById('contact-info');
+                const contactToggle = document.getElementById('contact-toggle');
+                 // 如果点击位置不在 contact 区域和按钮内，则关闭
+                if (!contactToggle.contains(event.target)) {
+                    contactBox.classList.remove('show');
+                }
+            });
+         </script>
+    </body> 
+</html>

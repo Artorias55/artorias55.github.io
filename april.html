@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <title>PIXEL</title>
+        <style>
+             *, *::before, *::after {
+            box-sizing: border-box;
+            }
+            body{
+                background-color: #ECEBE1;
+                color: #1C1916;
+                font-size: 2.5vw;
+                font-family:"DOT Bouwhuis TRIAL";
+            }
+            ::selection {
+                background: #E99841;  /* 自定义背景色 */
+                color: #ffffff;       /* 自定义字体颜色 */
+            }
+            /* 导航栏 */
+            header{
+                top: 0; 
+                left: 0;
+                position:fixed;
+                width: 100%;
+                display: flex;
+                /* flex-wrap: wrap; */
+                justify-content: space-between;
+                /* align-content: space-between; */
+            }
+            .left{
+                margin-left: 10px;
+            }
+            .right{
+                margin-right: 10px;
+            }
+            
+            a {
+                text-decoration: none; /* 取消下划线 */
+                color: inherit;        /* 继承父元素颜色，不是默认蓝 */
+                cursor: pointer;       /* 鼠标变成手型，提示可点击 */
+                transition: transform 0.3s ease;
+                display: block; 否则移动不生效
+            }
+            .top:hover {
+                text-decoration: underline; /* 鼠标悬停时显示下划线 */
+                color: #eed3b7;              /* 或你喜欢的颜色 */
+                cursor: pointer;
+            }
+          
+         
+            .outer{
+                padding-left: 30vw;
+                padding-top: 8vw;
+                padding-right: 8vw;
+                font-size: 0vw;
+                /* display: flex; */
+            }
+            .name{
+                font-size: 8vw;
+                margin-left: -.3vw;
+                padding-bottom: 2vw;
+            }            
+            .text{ 
+                /* margin: 0; */
+                position: fixed;
+                top:calc( 8px + 10vw);
+                left: 8vw;
+                font-size: 1.2vw;
+                font-family:PP Nikkei Pacific ;
+                margin-top: -.5vw;
+                font-weight: 300;
+                width: 16vw;
+                /* padding-bottom: 5VW; */
+                
+            }
+            
+
+            img{
+                border: 1.5px solid #1C1916; 
+                border-radius:2px; 
+                width: calc(100% );
+                margin-bottom: 2vw;
+                /* display: block; */
+            }
+            .middle{
+                width: calc((100% - 4vw) / 3 * 2 + 2vw);
+                display: block;
+            }
+            .small{
+                width: calc((100% - 4vw) / 3 );
+                display: inline-block;
+            }
+            .small:nth-of-type(4){
+                margin-right: 2vw;
+                margin-left: 2vw;
+                /* display: none; */
+            }
+            .small:nth-of-type(7){
+                margin-right: 2vw;
+                /* margin-left: 2vw; */
+                /* display: none; */
+            }
+            .contact{
+                margin-top: .6vw;
+                position:fixed;
+                padding-left: 0.5vw;
+                padding-right: 0.5vw;
+                /* margin-left: auto; */
+                font-size: 1.5vw;
+                color: #1c1616;
+                right: 10px;
+                background-color: #ecebe1;
+                border: 1.5px solid #1c1616; 
+                display: none;
+                line-height: .3;
+            }
+            .contact.show{
+                display: block; /* 悬停时显示 */
+            }
+       
+     
+        
+        </style>
+    </head>
+    <body>
+        <header>
+            <a href="http://127.0.0.1:5500/project.html" class="top left">back</a>
+            <div class="top center">menu</div>
+            <div class="top right" id="contact-toggle">
+                contact
+                <div class="contact" id="contact-info">
+                    <p>zhy0909hhh@gmail.com</p>
+                    <p>ins yixijiji</p>
+                    <p>+31 (0)6 16378655</p>
+                </div>
+            </div>
+        </header>
+        <div class="text">Spring in 2023, the Covid-19 was on the verge of breaking out in Shanghai. Under the government's dynamic clearing policy, a five-day closure evolved into a two-month-long shutdown.
+<br><br>
+Undergoing the 60 days, I witnessed
+<br><br>
+The loss of freedom to go out,<br>
+The shortage of unified food supply,<br>
+The confrontation between residents and the forced transit policy,<br>
+The creation of spontaneous area-based rights collectives,<br>
+And the government's constant invention of new words,<br>
+The unsealing was repeatedly postponed ……
+<br><br>
+The individuals are ignored, in the way of centralism achieving its great victory against the epidemic.
+        </div>
+        <div class="outer">
+                <div class="name">Voice of the April</div>
+                <img src="./homepage/projects/april/传送带_画板 1.png" alt="">
+                <img src="./homepage/projects/april/屏幕春天_画板 1 副本 2.png" class="middle"style="margin-left: auto;" alt="">
+                <img src="./homepage/projects/april/扫码_画板 1 副本.png" class="small" alt="">
+                <img src="./homepage/projects/april/棋盘_画板 1 副本 4.png" class="small" alt="">
+                <img src="./homepage/projects/april/时钟牢房_画板 1.png" class="small" alt="">
+                <img src="./homepage/projects/april/抗原棺材_画板 1 副本.png" alt="">
+                <img src="./homepage/projects/april/点滴_画板 1 副本.png" class="small" alt="">
+                <img src="./homepage/projects/april/监视_画板 1.png" class="small" alt="">
+               
+        </div>
+           
+            
+         <script>
+           
+            // contact按钮
+            document.getElementById('contact-toggle').addEventListener('click', function (event) {
+                const contactBox = document.getElementById('contact-info');
+                contactBox.classList.toggle('show');
+                event.stopPropagation(); // 阻止事件冒泡到 body
+            });
+
+            document.addEventListener('click', function (event) {
+                const contactBox = document.getElementById('contact-info');
+                const contactToggle = document.getElementById('contact-toggle');
+                 // 如果点击位置不在 contact 区域和按钮内，则关闭
+                if (!contactToggle.contains(event.target)) {
+                    contactBox.classList.remove('show');
+                }
+            });
+         </script>
+    </body> 
+</html>

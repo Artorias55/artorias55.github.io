@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <title>PIXEL</title>
+        <style>
+             *, *::before, *::after {
+            box-sizing: border-box;
+            }
+            body{
+                background-color: #ECEBE1;
+                color: #1C1916;
+                font-size: 2.5vw;
+                font-family:"DOT Bouwhuis TRIAL";
+            }
+            ::selection {
+                background: #E99841;  /* 自定义背景色 */
+                color: #ffffff;       /* 自定义字体颜色 */
+            }
+            /* 导航栏 */
+            header{
+                top: 0; 
+                left: 0;
+                position:fixed;
+                width: 100%;
+                display: flex;
+                /* flex-wrap: wrap; */
+                justify-content: space-between;
+                /* align-content: space-between; */
+                z-index: 1;
+            }
+            .left{
+                margin-left: 10px;
+            }
+            .right{
+                margin-right: 10px;
+            }
+            
+            a {
+                text-decoration: none; /* 取消下划线 */
+                color: inherit;        /* 继承父元素颜色，不是默认蓝 */
+                cursor: pointer;       /* 鼠标变成手型，提示可点击 */
+                transition: transform 0.3s ease;
+                display: block;
+            }
+            .top:hover {
+                text-decoration: underline; /* 鼠标悬停时显示下划线 */
+                color: #eed3b7;              /* 或你喜欢的颜色 */
+                cursor: pointer;
+            }
+            .yixi a:hover {
+                text-decoration: underline; /* 鼠标悬停时显示下划线 */
+                color: #eed3b7;              /* 或你喜欢的颜色 */
+                cursor: pointer;
+            }
+          
+         
+            .outer{
+                padding-left: 30vw;
+                padding-top: 8vw;
+                padding-right: 8vw;
+                font-size: 0vw;
+                /* display: flex; */
+                /* position: relative; */
+            }
+            .name{
+                font-size: 8vw;
+                margin-left: -.3vw;
+                padding-bottom: 2vw;
+            }    
+            .yixi{
+                font-size: 2vw;
+                position: absolute;
+                top: 10vw;
+                right: calc(8vw + 8px);
+                font-family:PP Nikkei Pacific ;
+                font-weight: 300;
+            }        
+            .text{ 
+                /* margin: 0; */
+                position: fixed;
+                top:calc( 8px + 10vw);
+                left: 8vw;
+                font-size: 1.2vw;
+                font-family:PP Nikkei Pacific ;
+                margin-top: -.5vw;
+                font-weight: 300;
+                width: 16vw;
+                /* padding-bottom: 5VW; */
+                
+            }
+            
+
+            img{
+                border: 1.5px solid #1C1916; 
+                border-radius:2px; 
+                width: calc(50% - 1vw);
+                margin-bottom: 2vw;
+                /* display: block; */
+            }
+            .outer .draw:nth-of-type(odd) {
+                margin-left: 2vw;
+            }
+            .photo{width: 100%;}
+          
+            .contact{
+                margin-top: .6vw;
+                position:fixed;
+                padding-left: 0.5vw;
+                padding-right: 0.5vw;
+                /* margin-left: auto; */
+                font-size: 1.5vw;
+                color: #1c1616;
+                right: 10px;
+                background-color: #ecebe1;
+                border: 1.5px solid #1c1616; 
+                display: none;
+                line-height: .3;
+            }
+            .contact.show{
+                display: block; /* 悬停时显示 */
+            }
+            video{
+                border: 1.5px solid #1C1916; 
+                border-radius:2px; 
+                width: 100%;
+                display: block;
+                margin-left: auto;
+                margin-bottom: 2vw;
+            }
+            .yixi a{display: inline;}
+       
+     
+        
+        </style>
+    </head>
+    <body>
+        <header>
+            <a href="http://127.0.0.1:5500/project.html" class="top left">back</a>
+            <div class="top center">menu</div>
+            <div class="top right" id="contact-toggle">
+                contact
+                <div class="contact" id="contact-info">
+                    <p>zhy0909hhh@gmail.com</p>
+                    <p>ins yixijiji</p>
+                    <p>+31 (0)6 16378655</p>
+                </div>
+            </div>
+        </header>
+        <div class="text">In the southeastern region of Guizhou Province, there is a concentration inhabited by the minority nationalities and Miaos account the most. 
+            <br><br>Deep in the moutains with poor access, this region is widely considered as cut off from the outside world. It is also enveloped in a shroud of mysrty legends, among which Miao Doctor plays a legendary role.
+
+            <br><br>This project conducted on-site interviews with three Miao doctors of different age groups and varying levels of residential development. After spending a month living with and following them, we showcased the image of Miao doctors and the ethnic minority culture here through various media.
+        </div>
+        <div class="outer">
+                <div class="name">Veiled by<br>Cloud and Mist</div>
+                <div class="name yixi">photos by <a href="www.tianyixi.com">yixi</a></div>
+                <img src="./homepage/projects/cloud/DSCF4878.jpg" class="photo">
+                <img src="./homepage/projects/cloud/draw (1).png" class="draw" alt="">
+                <img src="./homepage/projects/cloud/draw (3).png" class="draw" alt="">
+                <img src="./homepage/projects/cloud/draw (2).png" class="draw" alt="">
+                <img src="./homepage/projects/cloud/draw (4).png" class="draw" alt="">
+                <video src="./homepage/projects/cloud/Veiled by Cloud and Mist.mp4"  autoplay loop controls playsinline muted></video>
+                <img src="./homepage/projects/cloud/draw (13).png" class="draw" alt="">
+                <img src="./homepage/projects/cloud/draw (12).png" class="draw" alt="">
+                
+                <img src="./homepage/projects/cloud/draw (7).png" class="draw" alt="">
+                <img src="./homepage/projects/cloud/draw (8).png" class="draw" alt="">
+                <img src="./homepage/projects/cloud/DSC_1811.jpg" class="photo">
+                <img style="display: none;">
+                <img src="./homepage/projects/cloud/draw (16).png" style="width: 100%;"class="draw" alt="">
+                <img style="display: none;">
+                <img src="./homepage/projects/cloud/draw (14).png" class="draw" alt="">
+                <img src="./homepage/projects/cloud/draw (15).png" class="draw" alt="">
+                <img src="./homepage/projects/cloud/_DSF6125 拷贝.jpg" class="photo">
+                <img style="display: none;">
+                
+                <img src="./homepage/projects/cloud/draw (10).png" class="draw" alt="">
+                <img src="./homepage/projects/cloud/draw (11).png" class="draw" alt="">
+                <img src="./homepage/projects/cloud/draw (9).png" class="draw" alt="">
+                
+                <img src="./homepage/projects/cloud/draw (6).png" class="draw" alt="">
+                
+                
+                
+               
+               
+        </div>
+           
+            
+         <script>
+           
+            // contact按钮
+            document.getElementById('contact-toggle').addEventListener('click', function (event) {
+                const contactBox = document.getElementById('contact-info');
+                contactBox.classList.toggle('show');
+                event.stopPropagation(); // 阻止事件冒泡到 body
+            });
+
+            document.addEventListener('click', function (event) {
+                const contactBox = document.getElementById('contact-info');
+                const contactToggle = document.getElementById('contact-toggle');
+                 // 如果点击位置不在 contact 区域和按钮内，则关闭
+                if (!contactToggle.contains(event.target)) {
+                    contactBox.classList.remove('show');
+                }
+            });
+         </script>
+    </body> 
+</html>
