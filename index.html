@@ -2,23 +2,20 @@
 <html lang="zh-CN">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>PIXEL</title>
         <style>
             body{
                 background-image:url("https://Artorias55.github.io/homepage/homepage/projects/bkg.jpg");
-                /* background-size: 100%;
-                background-repeat: no-repeat; */
-                background-attachment: scroll;
-
-                background-size: cover;
-                background-position: center;
+                background-size: 100%;
                 background-repeat: no-repeat;
-
+                background-attachment: scroll;
                 min-height: 95vw; /* 高度至少是视口高度 */
 
                 color: #E99841;
                 font-size: 2.5vw;
                 font-family:"DOT Bouwhuis TRIAL";
+                margin: 0;
             }
             ::selection {
                 background: #E99841;  /* 自定义背景色 */
@@ -93,6 +90,31 @@
             }
             .contact.show{
                 display: block; /* 悬停时显示 */
+            }
+
+             @media (max-width:900px) {
+                body{
+                     height: 100vh; 
+                       background-size: auto 100vh;     /* 高度100vh，宽度自动按比例缩放 */
+                    background-repeat: no-repeat;    /* 不重复 */
+                    background-position: center center; /* 水平和垂直都居中 */
+                    background-color: black;         /* 两侧裁切时背景是黑色，可改 */
+                }
+                .top{
+                    font-size: 6vw;
+                }
+                .left{
+                    margin-left: 5px;
+                }
+                .right{
+                    margin-right: 5px;
+                }
+                .outer{
+                    font-size: 12vw;
+                    left: 30vw;
+                    top: 80vw;
+                    line-height: 20vw;
+                }
             }
         </style>
     </head>
