@@ -150,7 +150,9 @@
              @media (max-width:900px) {
                 body{
                      height: 100vh; 
-                       background-size: auto 100vh;     /* 高度100vh，宽度自动按比例缩放 */
+                     /* 100dvh 是 “动态视口高度”，只包括 可见区域（排除了地址栏） */
+                    background-size: auto 100dvh;    
+                    overflow: hidden; /* 禁止页面滑动 */
                     background-repeat: no-repeat;    /* 不重复 */
                     background-position: center center; /* 水平和垂直都居中 */
                     background-color: black;         /* 两侧裁切时背景是黑色，可改 */
