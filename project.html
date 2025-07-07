@@ -86,6 +86,19 @@
                 /* align-content: space-between; */
                 z-index: 1000; /* 必须高于所有内容 */
             }
+            :root {
+                --color2: #1C1916;
+                --color1: #ECEBE1;
+            }
+            header::after {
+                z-index: 1;
+                content: "";
+                position: absolute;
+                bottom: 0;
+                /* left: 2%; */
+                width: 100%;
+                border-bottom: 1.5px solid var(--color2);
+            }
             .left{
                 margin-left: 10px;
             }
