@@ -74,6 +74,10 @@
                 background: #E99841;  /* 自定义背景色 */
                 color: #ffffff;       /* 自定义字体颜色 */
             }
+            :root {
+                --color2: #1C1916;
+                --color1: #ECEBE1;
+            }
             /* 导航栏 */
             header{
                 top: 0; 
@@ -85,11 +89,10 @@
                 justify-content: space-between;
                 /* align-content: space-between; */
                 z-index: 1000; /* 必须高于所有内容 */
+                background-color: var(--color1); /* 背景颜色存在 */
             }
-            :root {
-                --color2: #1C1916;
-                --color1: #ECEBE1;
-            }
+            
+            
             header::after {
                 z-index: 1;
                 content: "";
@@ -293,7 +296,7 @@
                 <div class="name" >Continuum</div>
                 <div class="wrapper">
                     <img src="./homepage/projects/toolssource/furnT/FurnT.png_0015_furn-(2).png" class="default-img" alt="" >
-                    <img src="./homepage/projects/toolssource/furnT/furn (2).gif" class="hover-img" alt="">
+                    <img src="./homepage/projects/toolssource/furnT/Furn.gif" class="hover-img" alt="">
                     <img src="./homepage/projects/toolssource/furnT/Furn2.gif" class="phone-img" alt="">
                 </div>
                 <div class="date">Whether everyday objects can persistently provoke reflection on consumerism and artistic institutionalization within lived environments.<br><br>2024 - 2025
