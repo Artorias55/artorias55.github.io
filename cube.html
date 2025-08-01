@@ -75,6 +75,11 @@
                 color: #ffffff;       /* 自定义字体颜色 */
             }
             /* 导航栏 */
+            :root {
+                --color2: #1C1916;
+                --color1: #ECEBE1;
+            }
+            
             header{
                 top: 0; 
                 left: 0;
@@ -84,6 +89,17 @@
                 /* flex-wrap: wrap; */
                 justify-content: space-between;
                 /* align-content: space-between; */
+                z-index: 1000; /* 必须高于所有内容 */
+                background-color: var(--color1); /* 背景颜色存在 */
+            }
+            header::after {
+                z-index: 1;
+                content: "";
+                position: absolute;
+                bottom: 0;
+                /* left: 2%; */
+                width: 100%;
+                border-bottom: 1.5px solid var(--color2);
             }
             .left{
                 margin-left: 10px;
@@ -191,7 +207,7 @@
     <body>
         <header>
             <a href="https://artorias55.github.io/homepage/project.html" class="top left">back</a>
-            <div class="top center">menu</div>
+            <div class="center">the black cube</div>
             <div class="top right" id="contact-toggle">
                 contact
                 <div class="contact" id="contact-info">
