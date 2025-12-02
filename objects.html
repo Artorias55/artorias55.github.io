@@ -141,38 +141,39 @@
                 padding-top: 5px;
               
             }
-            img{
+            /* img{
                 object-fit: contain;
                 width:100%;
-            }
+            } */
+         
+
             .card{
-                aspect-ratio: 8/9.3;
-                background-color: var(--color1);
+                aspect-ratio: 1 / 1;              /* 让卡片变成正方形，可改回 8/9.3 如果你想保持原比例 */
+                background-color: transparent;     /* 如果真的想“透明”就用 transparent，想要卡片底色就用原来的 var(--color1) */
 
                 border-radius:1px; 
                 border: 1.5px solid var(--color2); 
-                
-                /* box-shadow: 0px 0px 3px #E99841; */
-                /* 隐藏图片上边圆角 */
                 overflow: hidden;
                 transition: transform 0.3s ease;
-             
-                /* flex-grow: 1;
-                flex-shrink: 1; */
-                /* 每行放五个 */
+
                 flex-basis: calc((100% - 20px * 3 ) / 4);
 
                 display: flex;
-                flex-direction: column;
-                /* flex-wrap: wrap; */
-                /* 保证图片贴住上边，因为默认是strech而图片没给高度会居中 */
-                align-items: flex-start;
-                /* 让日期文字垂直不留空，方便居中 */
-                align-content: flex-start;
-                /* 让hover里的向上移动生效 */
+                justify-content: center;           /* 水平居中图片 */
+                align-items: center;               /* 垂直居中图片 */
+
                 position: relative;
                 color: var(--color2);
             }
+
+            .card img{
+                display: block;
+                width: auto;       /* 不强制拉伸宽度 */
+                height: auto;      /* 不强制拉伸高度 */
+                max-width: 100%;   /* 大于容器时才缩小 */
+                max-height: 100%;
+            }
+            
             .card:hover:not(.selected){
                 box-shadow: 0px 0px 3px var(--color2);
                 /* border: 1.5px solid rgb(232, 232, 232); */
