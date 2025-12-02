@@ -147,33 +147,43 @@
             } */
          
 
-            .card{
-                aspect-ratio: 1 / 1;              /* 让卡片变成正方形，可改回 8/9.3 如果你想保持原比例 */
-                background-color: transparent;     /* 如果真的想“透明”就用 transparent，想要卡片底色就用原来的 var(--color1) */
+           .card{
+                aspect-ratio: 8 / 9.3;  /* 或你自己的比例 */
+                background-color: var(--color1);
 
                 border-radius:1px; 
                 border: 1.5px solid var(--color2); 
                 overflow: hidden;
-                transition: transform 0.3s ease;
 
                 flex-basis: calc((100% - 20px * 3 ) / 4);
-
-                display: flex;
-                justify-content: center;           /* 水平居中图片 */
-                align-items: center;               /* 垂直居中图片 */
-
                 position: relative;
-                color: var(--color2);
             }
 
             .card img{
-                display: block;
-                width: auto;       /* 不强制拉伸宽度 */
-                height: auto;      /* 不强制拉伸高度 */
-                max-width: 100%;   /* 大于容器时才缩小 */
+                position: absolute;
+                top: 50%;
+                left: 50%;
+
+                transform: translate(-50%, -50%);
+
+                width: auto;
+                height: auto;
+
+                max-width: 100%;
                 max-height: 100%;
+                object-fit: contain;
+                pointer-events: none;
             }
-            
+            .date{
+                position: absolute;
+                bottom: 5px;
+                left: 5px;
+
+                z-index: 5;
+                font-size: 1vw;
+                font-family: "VG5000 Regular";
+            }
+
             .card:hover:not(.selected){
                 box-shadow: 0px 0px 3px var(--color2);
                 /* border: 1.5px solid rgb(232, 232, 232); */
