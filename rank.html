@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="no-scrollbar">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PIXEL</title>
+        <style>
+            @font-face {
+                font-family: 'abordage';
+                src: url('./fonts/Abordage-Regular.woff2') format('woff2'),
+                     url('./fonts/Abordage-Regular.woff') format('woff'),
+                     url('./fonts/Abordage-Regular.otf') format('otf');
+                font-weight: normal;
+                font-style: normal;
+            }       
+            @font-face {
+                font-family: 'VG5000 Regular';
+                src: url('./fonts/VG5000-Regular_web.woff2') format('woff2'),
+                     url('./fonts/VG5000-Regular_web.woff') format('woff'),
+                     url('./fonts/VG5000-Regular_web.otf') format('otf');
+                font-weight: normal;
+                font-style: normal;
+            }
+             @font-face {
+                font-family: 'DOT Bouwhuis TRIAL';
+                src: url('./fonts/DOTBouwhuisTRIAL-Bold.ttf') format('ttf');
+                src: url('./fonts/DOTBouwhuisTRIAL-Bold.woff2') format('woff2');
+                font-weight: 700;
+                font-style: normal;
+            }
+            @font-face {
+                font-family: 'DOT Bouwhuis TRIAL';
+                src: url('./fonts/DOTBouwhuisTRIAL-Regular.ttf') format('ttf');
+                src: url('./fonts/DOTBouwhuisTRIAL-Regular.woff2') format('woff2');
+                font-weight: 400;
+                font-style: normal;
+            }
+            @font-face {
+                font-family: 'DOT Bouwhuis TRIAL';
+                src: url('./fonts/DOTBouwhuisTRIAL-Thin.ttf') format('ttf');
+                src: url('./fonts/DOTBouwhuisTRIAL-Thin.woff2') format('woff2');
+                font-weight: 300;
+                font-style: normal;
+            }
+            :root {
+                --color2: #323333;
+                --color1: #F9F8F6;
+                --color2: #f27b68;
+                --color1: #E8E0C9;
+                --color2: #202020;
+                --color1: #F4F0EC;
+                --color2: #1C1916;
+                --color1: #ECEBE1;
+            }
+            *, *::before, *::after {
+            box-sizing: border-box;
+            }
+
+            ::selection {
+                background: #E99841;  /* 自定义背景色 */
+                color: #ffffff;       /* 自定义字体颜色 */
+            }
+            a {
+                text-decoration: none; /* 取消下划线 */
+                color: inherit;        /* 继承父元素颜色，不是默认蓝 */
+                cursor: pointer;       /* 鼠标变成手型，提示可点击 */
+            }
+            .top:hover {
+                text-decoration: underline; /* 鼠标悬停时显示下划线 */
+                color: #eed3b7;              /* 或你喜欢的颜色 */
+                cursor: pointer;
+            }
+            
+            html{background-color: var(--color1);}   
+            header{
+                font-size: 2.5vw;
+                font-weight: normal;
+                font-family:"DOT Bouwhuis TRIAL";
+                color: var(--color2);
+               
+                top: -20px;
+                left: 0;
+                position:fixed;
+                width: 100%;
+                padding-bottom: 3px;
+                background-color: var(--color1);
+
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                /* align-content: space-between; */
+              
+                 z-index: 1;
+                 display: flex;
+                /* flex-wrap: wrap; */
+                justify-content: space-between;
+            }
+            .left{
+                margin-left: 10px;
+            }
+            .right{
+                margin-right: 10px;
+            }
+            header::after {
+                z-index: 1;
+                 content: "";
+                    position: absolute;
+                    bottom: 0;
+                    /* left: 2%; */
+                    width: 100%;
+                    border-bottom: 1.5px solid var(--color2);
+                }
+            .name{
+                padding-top: 20px;
+            }
+         
+            .outer{
+                width: 96%;
+                display: flex;
+                justify-items: auto;
+                gap:20px 20px;
+                margin:16px auto;
+                 flex-wrap: wrap;}
+
+         
+         
+
+          
+           
+             .space{height: calc(3vw - 6px);}
+             @media (max-width:900px) {
+                .card{
+                    flex-basis: calc(50% - 10px);
+                }
+                .date {font-size: 2vw; }
+                .name{padding-top: 5px; 
+                }
+                header{font-size: 4vw;top: -5px;padding-bottom: 3px;}
+                .space{height:calc(5vw - 12px);}
+            }
+            .selected{
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                    width: 90vw;          /* 优先宽度 70% */
+                    max-height: 100vh;     /* 最大高度不超过 90% 屏幕 */
+                    height: auto;         /* 高度自适应 */
+
+                    max-width: calc(100vh * 0.72); /* 限制宽度在高不够时自适应缩小 */
+                 flex-basis: calc(60% - 4.8px);
+                z-index: 2;
+                border-radius: 10px;
+                font-size:50px;
+
+            }
+            
+            
+         
+            /* 只隐藏滚动条，不禁用滚动 */
+            .no-scrollbar {
+                overflow:auto;
+                -ms-overflow-style: none;  /* IE 和 Edge */
+                scrollbar-width: none;     /* Firefox */
+            }
+
+         
+
+             .contact{
+                margin-top: .6vw;
+                position:fixed;
+                padding-left: 0.5vw;
+                padding-right: 0.5vw;
+                /* margin-left: auto; */
+                font-size: 1.5vw;
+                color: #1c1616;
+                right: 10px;
+                background-color: #ecebe1;
+                border: 1.5px solid #1c1616; 
+                display: none;
+                line-height: .3;
+            }
+            .contact.show{
+                display: block; /* 悬停时显示 */
+            }
+         
+            img {
+                display: block;
+                width: 100%;      /* 宽度永远撑满屏幕 */
+                height: auto;     /* 高度按比例增长，可超出一屏 */
+                object-fit: contain;
+                pointer-events: none;
+            }
+        </style>
+    </head>
+    <body class="no-scrollbar">
+        <header>
+            <a href="https://artorias55.github.io/objects.html" class="name left top">back</a>
+            <div class="name">38 Murder Weapens</div>
+            <div class="top right name" id="contact-toggle">
+                info
+                <div class="contact" id="contact-info">
+                    <p>KABK MID Y1</p>
+                    <p>DESIGN THEORY</p>
+                    <p>GUUUUUUUUUUUS</p>
+                </div>
+            </div>
+            <!-- <div class="line"></div> -->
+            <!-- <hr class="clean-line"> -->
+        </header>
+        <div class='space'></div>
+     
+      <div class="outer">
+         
+          
+            <img src="./homepage/objects/web3.png" alt="" >
+           
+         
+       
+      </div>
+      <script>
+  // contact 按钮显示 / 隐藏 INFO 区域
+    const contactToggle = document.getElementById('contact-toggle');
+    const contactBox = document.getElementById('contact-info');
+
+    contactToggle.addEventListener('click', function (event) {
+        event.stopPropagation();  // 不让点击冒泡到 body
+        contactBox.classList.toggle('show');
+    });
+
+    // 点击页面其他区域关闭 info
+    document.addEventListener('click', function (event) {
+        if (!contactToggle.contains(event.target)) {
+            contactBox.classList.remove('show');
+        }
+    });
+</script>
+    </body> 
+</html>

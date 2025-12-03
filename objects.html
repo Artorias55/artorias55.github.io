@@ -273,23 +273,64 @@
                 display: block;
                 margin-left: auto;
             }
+            .contact-left {
+                font-size: 1.5vw;
+                left: 10px;
+                right: auto;
+            }
+            .contact a {
+                display: block;
+                color: inherit;
+                text-decoration: none;
+                padding: 4px 0;
+            }
+
+            .contact a:hover {
+                text-decoration: underline;
+            }
+            /* 左侧弹窗位置修复，与右侧逻辑一致 */
+            .contact-left {
+                left: 10px;
+                right: auto;
+                top: 60px;              /* ← 关键：把弹窗固定在 header 下方 */
+                position: absolute;     /* 和右侧 info 的定位行为对齐 */
+            }
+
+            /* 让左侧弹窗的 a 和 rankings 一样 hover 变色 */
+            .contact-left a:hover {
+                text-decoration: underline;
+                color: #eed3b7;
+            }
+            .contact-left a {
+                display: block;
+                margin: 0.5em 0;       /* 模拟 p 的 margin */
+                /* font-family: "VG5000 Regular"; */
+                font-size: 1.5vw;
+                line-height: 0.5;
+            }
+
+
         </style>
-    </head>
-    <body class="no-scrollbar">
-        <header>
-            <a href="https://artorias55.github.io/index.html" class="name left top">back</a>
-            <div class="name">WHETHER CAN BE USED AS MURDER WEAPEN</div>
-            <div class="top right name" id="contact-toggle">
-                info
-                <div class="contact" id="contact-info">
-                    <p>KABK MID Y1</p>
-                    <p>DESIGN THEORY</p>
-                    <p>GUUUUUUUUUUUS</p>
-                </div>
+   <header>
+        <a class="name left top" id="back-toggle">rankings</a>
+        <div class="contact contact-left" id="back-info">
+            <a href="https://artorias55.github.io/rank.html">Hand-made to Machine-made</a>
+            <a href="https://artorias55.github.io/rank1.html">Whether can be used as murder weapen</a>
+            <a href="https://artorias55.github.io/rank2.html">Emotional-Comfortability</a>
+        </div>
+
+        <div class="name">38 Murder Weapens</div>
+
+        <div class="top right name" id="contact-toggle">
+            info
+            <div class="contact" id="contact-info">
+                <p>KABK MID Y1</p>
+                <p>DESIGN THEORY</p>
+                <p>GUUUUUUUUUUUS</p>
             </div>
-            <!-- <div class="line"></div> -->
-            <!-- <hr class="clean-line"> -->
-        </header>
+        </div>
+    </header>
+
         <div class='space'></div>
      
       <div class="outer">
@@ -544,6 +585,23 @@
                     contactBox.classList.remove('show');
                 }
             });
+
+        // back 按钮
+        document.getElementById('back-toggle').addEventListener('click', function (event) {
+            const backBox = document.getElementById('back-info');
+            backBox.classList.toggle('show');
+            event.stopPropagation();
+        });
+
+        // 点击其他区域关闭 back 弹窗
+        document.addEventListener('click', function (event) {
+            const backBox = document.getElementById('back-info');
+            const backToggle = document.getElementById('back-toggle');
+
+            if (!backToggle.contains(event.target)) {
+                backBox.classList.remove('show');
+            }
+        });
 
     
 </script>
