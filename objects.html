@@ -461,7 +461,7 @@
             if (img && dateDiv) {
                 const src = img.getAttribute('src');
                 const fileName = src.match(/([^\/]+)(?=\.\w+$)/)[0];
-                dateDiv.textContent = fileName.replace(/_/g, '.');
+                dateDiv.textContent = fileName;
             }
 
             card.onclick = function (e) {
