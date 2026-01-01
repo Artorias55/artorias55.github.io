@@ -142,8 +142,7 @@
               
             }
             img{
-                object-fit: contain;
-                width:100%;
+                 display: block;
             }
             .card{
                 aspect-ratio: 8/9.3;
@@ -197,29 +196,18 @@
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                    width: 90vw;          /* 优先宽度 70% */
+                    /* width: 90vw;           */
                     max-height: 100vh;     /* 最大高度不超过 90% 屏幕 */
                     height: auto;         /* 高度自适应 */
 
-                    max-width: calc(100vh * 0.72); /* 限制宽度在高不够时自适应缩小 */
+                    /* max-width: calc(100vh * 0.72); */
                  flex-basis: calc(60% - 4.8px);
                 z-index: 2;
                 border-radius: 10px;
                 font-size:50px;
 
             }
-            .selected .date{font-size: 15px;}
-            .selected img.grid-overlay {
-                position: absolute;
-                /* top: 0; */
-                /* left: 0; */
-                width: 100%;  /* 和父容器一样大 */
-                /* height: 100%; */
-                pointer-events: none;  /* 让点击穿透，不影响交互 */
-                user-select: none;     /* 防止选中 */
-                /* image-rendering: pixelated;  */
-                z-index: 10;  /* 保证在原图上方 */
-            }
+         
             
          
             /* 只隐藏滚动条，不禁用滚动 */
@@ -262,6 +250,47 @@
                 display: block;
                 margin-left: auto;
             }
+
+           .card:not(.selected) > img:first-of-type{
+              width: 100%;
+              aspect-ratio: 1 / 1;
+              height: auto;
+              object-fit: cover;
+              object-position: center;
+              display: block;
+            }
+
+            /* 放大态：取消卡片固定比例（否则会留白） */
+            .card.selected{
+              position: fixed;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+
+              width: auto;
+              height: auto;
+              max-width: 92vw;
+              max-height: 92vh;
+
+              aspect-ratio: auto;
+              display: block;
+              z-index: 2;
+              border-radius: 10px;
+            }
+
+            /* 放大态图片：完整显示，不裁切 */
+            .card.selected > img:first-of-type{
+              width: auto;
+              height: auto;
+
+              max-width: 80vw;
+              max-height: 80vh;
+
+              object-fit: contain;
+              object-position: center;
+              display: block;
+            }
+            
         </style>
     </head>
     <body class="no-scrollbar">
@@ -282,6 +311,31 @@
         <div class='space'></div>
      
       <div class="outer">
+          
+          <div class="card"> 
+            <img src="./homepage/draws/26.1.1.png" alt="" >
+            <div class="date"> </div>
+          </div>
+          <div class="card"> 
+            <img src="./homepage/draws/25.12.20.png" alt="" >
+            <div class="date"> </div>
+          </div>
+          <div class="card"> 
+            <img src="./homepage/draws/25.12.18.png" alt="" >
+            <div class="date"> </div>
+          </div>
+        <div class="card"> 
+            <img src="./homepage/draws/25.12.16.png" alt="" >
+            <div class="date"> </div>
+          </div>
+          <div class="card"> 
+            <img src="./homepage/draws/25.12.15.png" alt="" >
+            <div class="date"> </div>
+          </div>
+          <div class="card"> 
+            <img src="./homepage/draws/25.12.1.png" alt="" >
+            <div class="date"> </div>
+          </div>
           <div class="card"> 
             <img src="./homepage/draws/25.11.26.png" alt="" >
             <div class="date"> </div>
@@ -924,12 +978,14 @@
                 const clone = card.cloneNode(true);
                 clone.classList.add('selected');
                      // 创建一个新的图片元素
-                    const img = document.createElement('img');
-                    img.src = './homepage/draws/g2.PNG';  // 替换成你想插入的图片地址
-                    // img.alt = 'description';         // 可选，图片描述
-                    img.classList.add('grid-overlay');
-                    // 把图片插入到clone的第一个子元素位置
-                    clone.insertBefore(img, clone.firstChild);
+                     
+                   // 放大态：移除 date（彻底不留白）
+                    const dateEl = clone.querySelector('.date');
+                    if (dateEl) dateEl.remove();
+
+                    // 放大态：确保只有一张图（保险：如果里面有多张 img，只留第一张）
+                    const imgs = clone.querySelectorAll('img');
+                    imgs.forEach((im, idx) => { if (idx > 0) im.remove(); });
 
                 // 点击克隆卡片关闭
                 clone.onclick = function (e) {
