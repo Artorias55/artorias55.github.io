@@ -59,6 +59,16 @@
       background: #000;
       pointer-events: none;
     }
+
+    .preload-video {
+      position: fixed;
+      width: 1px;
+      height: 1px;
+      left: -9999px;
+      top: -9999px;
+      opacity: 0;
+      pointer-events: none;
+    }
   </style>
 </head>
 
@@ -106,6 +116,12 @@
     const BGM_VOLUME = 0.25;
     const BGM_START_TIME = 142;
 
+    // 当前视频前后各预加载几层
+    const PRELOAD_LAYERS = 2;
+
+    // 如果预加载还没完成，切换时最多等多久再开始动画
+    const INCOMING_WAIT_TIMEOUT = 1200;
+
     const app = document.getElementById("app");
 
     const cards = [
@@ -117,6 +133,8 @@
       document.getElementById("video0"),
       document.getElementById("video1")
     ];
+
+    const preloadVideos = new Map();
 
     let currentIndex = 0;
     let activeSlot = 0;
@@ -137,6 +155,10 @@
 
     function ease(t) {
       return t * t * (3 - 2 * t);
+    }
+
+    function wrapIndex(index) {
+      return (index + VIDEO_FILES.length) % VIDEO_FILES.length;
     }
 
     function applyTransform(slot, x, rot, scale) {
@@ -163,12 +185,79 @@
 
       video.loop = true;
       video.playsInline = true;
+      video.preload = "auto";
 
       if (video.dataset.src !== src) {
         video.src = src;
         video.dataset.src = src;
         video.load();
       }
+    }
+
+    function preloadVideo(index) {
+      if (VIDEO_FILES.length === 0) return;
+
+      index = wrapIndex(index);
+      const src = VIDEO_FILES[index];
+
+      if (preloadVideos.has(src)) return;
+
+      const video = document.createElement("video");
+
+      video.src = src;
+      video.preload = "auto";
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.className = "preload-video";
+
+      video.setAttribute("playsinline", "");
+      video.setAttribute("webkit-playsinline", "");
+
+      document.body.appendChild(video);
+
+      try {
+        video.load();
+      } catch (error) {}
+
+      preloadVideos.set(src, video);
+    }
+
+    function preloadAround(index) {
+      if (VIDEO_FILES.length === 0) return;
+
+      for (let i = 1; i <= PRELOAD_LAYERS; i++) {
+        preloadVideo(index + i);
+        preloadVideo(index - i);
+      }
+    }
+
+    function waitForVideoReady(video, timeout) {
+      return new Promise(function (resolve) {
+        if (video.readyState >= 2) {
+          resolve();
+          return;
+        }
+
+        let done = false;
+
+        function finish() {
+          if (done) return;
+          done = true;
+
+          video.removeEventListener("loadeddata", finish);
+          video.removeEventListener("canplay", finish);
+          video.removeEventListener("error", finish);
+
+          resolve();
+        }
+
+        video.addEventListener("loadeddata", finish);
+        video.addEventListener("canplay", finish);
+        video.addEventListener("error", finish);
+
+        setTimeout(finish, timeout);
+      });
     }
 
     function getAudioContext() {
@@ -272,7 +361,7 @@
       } catch (error) {}
     }
 
-    function switchVideo(direction) {
+    async function switchVideo(direction) {
       if (transitioning || VIDEO_FILES.length === 0) return;
 
       if (VIDEO_FILES.length === 1) {
@@ -291,7 +380,12 @@
       setVideoSource(incoming, nextIndex);
 
       videos[outgoing].muted = true;
+
+      // 立即请求播放，保留用户点击带来的播放权限
       playSlot(incoming, true);
+
+      // 如果视频还没准备好，最多等一小会，减少黑屏概率
+      await waitForVideoReady(videos[incoming], INCOMING_WAIT_TIMEOUT);
 
       cards[outgoing].style.zIndex = 1;
       cards[incoming].style.zIndex = 2;
@@ -329,6 +423,8 @@
 
         showSlot(incoming);
         hideSlot(outgoing);
+
+        preloadAround(currentIndex);
       }
 
       requestAnimationFrame(animate);
@@ -344,6 +440,8 @@
         videos[activeSlot].volume = 1;
         videos[activeSlot].loop = true;
         videos[activeSlot].play().catch(function () {});
+
+        preloadAround(currentIndex);
 
         return;
       }
@@ -412,6 +510,7 @@
       videos[0].play().catch(function () {});
 
       preloadBGM();
+      preloadAround(currentIndex);
     }
 
     init();
