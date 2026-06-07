@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>PIXEL Scan</title>
+
+  <style>
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      overflow: hidden;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    #app {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    #stage {
+      position: relative;
+      width: min(100vw, 75vh);
+      height: min(100vh, 133.333vw);
+      background: #000;
+      overflow: hidden;
+    }
+
+    .card {
+      position: absolute;
+      inset: 0;
+      background: #000;
+      overflow: hidden;
+      transform-origin: 50% 50%;
+      will-change: transform;
+      backface-visibility: hidden;
+    }
+
+    .card video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      background: #000;
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div id="stage">
+      <div class="card" id="card0">
+        <video id="video0" playsinline preload="auto" loop></video>
+      </div>
+
+      <div class="card" id="card1">
+        <video id="video1" playsinline preload="auto" loop></video>
+      </div>
+    </div>
+  </div>
+
+  <audio id="bgm" src="./bgm.mp3" loop preload="auto"></audio>
+
+  <script>
+    const VIDEO_FILES = [
+      "./01.mp4",
+      "./02.mp4",
+      "./03.mp4",
+      "./04.mp4",
+      "./05.mp4",
+      "./06.mp4",
+      "./07.mp4",
+      "./08.mp4",
+      "./09.mp4",
+      "./10.mp4",
+      "./11.mp4",
+      "./12.mp4",
+      "./13.mp4",
+      "./14.mp4",
+      "./15.mp4",
+      "./16.mp4",
+      "./17.mp4",
+      "./18.mp4"
+    ];
+
+    const DISTANCE = 1.25;
+    const ROTATE_MAX = 18;
+    const SCALE_DROP = 0.04;
+    const TRANSITION_DURATION = Math.round(550 / 0.7);
+
+    const BGM_VOLUME = 0.25;
+    const BGM_START_TIME = 142;
+
+    const app = document.getElementById("app");
+    const bgm = document.getElementById("bgm");
+
+    const cards = [
+      document.getElementById("card0"),
+      document.getElementById("card1")
+    ];
+
+    const videos = [
+      document.getElementById("video0"),
+      document.getElementById("video1")
+    ];
+
+    let currentIndex = 0;
+    let activeSlot = 0;
+    let transitioning = false;
+
+    let pointerDownX = 0;
+    let pointerDownY = 0;
+    let pointerIsDown = false;
+
+    let bgmStarted = false;
+    let bgmInitialSeekDone = false;
+    let firstInteractionDone = false;
+
+    bgm.volume = BGM_VOLUME;
+    bgm.loop = true;
+
+    function ease(t) {
+      return t * t * (3 - 2 * t);
+    }
+
+    function applyTransform(slot, x, rot, scale) {
+      cards[slot].style.transform =
+        `translateX(${x * 100}%) rotate(${rot}deg) scale(${scale})`;
+    }
+
+    function hideSlot(slot) {
+      applyTransform(slot, 3.0, 0, 1);
+      cards[slot].style.zIndex = 0;
+
+      videos[slot].muted = true;
+      videos[slot].pause();
+    }
+
+    function showSlot(slot) {
+      applyTransform(slot, 0, 0, 1);
+      cards[slot].style.zIndex = 2;
+    }
+
+    function setVideoSource(slot, index) {
+      const src = VIDEO_FILES[index];
+      const video = videos[slot];
+      video.loop = true;
+
+      if (video.dataset.src !== src) {
+        video.src = src;
+        video.dataset.src = src;
+        video.load();
+      }
+    }
+
+    function seekBGMToStartTimeOnce() {
+      if (bgmInitialSeekDone) return;
+
+      function doSeek() {
+        try {
+          bgm.currentTime = BGM_START_TIME;
+        } catch (error) {}
+
+        bgmInitialSeekDone = true;
+      }
+
+      if (bgm.readyState >= 1) {
+        doSeek();
+      } else {
+        bgm.addEventListener("loadedmetadata", doSeek, { once: true });
+      }
+    }
+
+    function startBGM() {
+      bgm.volume = BGM_VOLUME;
+      bgm.loop = true;
+
+      seekBGMToStartTimeOnce();
+
+      if (bgmStarted && !bgm.paused) return;
+
+      bgm.play()
+        .then(function () {
+          bgmStarted = true;
+        })
+        .catch(function () {});
+    }
+
+    async function playSlot(slot, withSound) {
+      const video = videos[slot];
+
+      try {
+        video.currentTime = 0;
+      } catch (error) {}
+
+      video.muted = !withSound;
+      video.volume = 1;
+      video.playsInline = true;
+
+      try {
+        await video.play();
+      } catch (error) {}
+    }
+
+    function switchVideo(direction) {
+      if (transitioning || VIDEO_FILES.length === 0) return;
+
+      if (VIDEO_FILES.length === 1) {
+        playSlot(activeSlot, true);
+        return;
+      }
+
+      transitioning = true;
+
+      const outgoing = activeSlot;
+      const incoming = activeSlot === 0 ? 1 : 0;
+
+      const nextIndex =
+        (currentIndex + direction + VIDEO_FILES.length) % VIDEO_FILES.length;
+
+      setVideoSource(incoming, nextIndex);
+
+      videos[outgoing].muted = true;
+      playSlot(incoming, true);
+
+      cards[outgoing].style.zIndex = 1;
+      cards[incoming].style.zIndex = 2;
+
+      const start = performance.now();
+
+      function animate(now) {
+        const rawT = Math.min(
+          1,
+          Math.max(0, (now - start) / TRANSITION_DURATION)
+        );
+
+        const t = ease(rawT);
+
+        const outgoingX = -direction * DISTANCE * t;
+        const incomingX = direction * DISTANCE * (1 - t);
+
+        const outgoingRot = -direction * ROTATE_MAX * t;
+        const incomingRot = direction * ROTATE_MAX * (1 - t);
+
+        const outgoingScale = 1 - SCALE_DROP * t;
+        const incomingScale = 1 - SCALE_DROP * (1 - t);
+
+        applyTransform(outgoing, outgoingX, outgoingRot, outgoingScale);
+        applyTransform(incoming, incomingX, incomingRot, incomingScale);
+
+        if (rawT < 1) {
+          requestAnimationFrame(animate);
+          return;
+        }
+
+        activeSlot = incoming;
+        currentIndex = nextIndex;
+        transitioning = false;
+
+        showSlot(incoming);
+        hideSlot(outgoing);
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    function handlePointerAction(endX, endY) {
+      if (!firstInteractionDone) {
+        firstInteractionDone = true;
+
+        // 第一次点击：只启动背景音乐 + 打开当前 01.mp4 的声音，不切换视频
+        startBGM();
+
+        videos[activeSlot].muted = false;
+        videos[activeSlot].volume = 1;
+        videos[activeSlot].play().catch(function () {});
+
+        return;
+      }
+
+      const dx = endX - pointerDownX;
+      const dy = endY - pointerDownY;
+      const dragThreshold = 60;
+
+      if (Math.abs(dx) > dragThreshold && Math.abs(dx) > Math.abs(dy)) {
+        if (dx < 0) {
+          switchVideo(1);
+        } else {
+          switchVideo(-1);
+        }
+
+        return;
+      }
+
+      if (endX < window.innerWidth / 2) {
+        switchVideo(-1);
+      } else {
+        switchVideo(1);
+      }
+    }
+
+    app.addEventListener("pointerdown", function (event) {
+      pointerIsDown = true;
+      pointerDownX = event.clientX;
+      pointerDownY = event.clientY;
+
+      try {
+        app.setPointerCapture(event.pointerId);
+      } catch (error) {}
+    });
+
+    app.addEventListener("pointerup", function (event) {
+      if (!pointerIsDown) return;
+
+      pointerIsDown = false;
+      handlePointerAction(event.clientX, event.clientY);
+    });
+
+    app.addEventListener("pointercancel", function () {
+      pointerIsDown = false;
+    });
+
+    function init() {
+      if (VIDEO_FILES.length === 0) return;
+
+      currentIndex = 0;
+      activeSlot = 0;
+
+      setVideoSource(0, currentIndex);
+
+      videos[0].muted = true;
+      videos[0].playsInline = true;
+      videos[1].playsInline = true;
+
+      showSlot(0);
+      hideSlot(1);
+
+      videos[0].play().catch(function () {});
+    }
+
+    init();
+  </script>
+</body>
+</html>
