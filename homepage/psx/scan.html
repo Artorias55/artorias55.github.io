@@ -75,8 +75,6 @@
     </div>
   </div>
 
-  <audio id="bgm" src="./bgm.mp3" loop preload="auto"></audio>
-
   <script>
     const VIDEO_FILES = [
       "./01.mp4",
@@ -96,7 +94,8 @@
       "./15.mp4",
       "./16.mp4",
       "./17.mp4",
-      "./18.mp4"
+      "./18.mp4",
+      "./19.mp4"
     ];
 
     const DISTANCE = 1.25;
@@ -108,7 +107,6 @@
     const BGM_START_TIME = 142;
 
     const app = document.getElementById("app");
-    const bgm = document.getElementById("bgm");
 
     const cards = [
       document.getElementById("card0"),
@@ -128,12 +126,14 @@
     let pointerDownY = 0;
     let pointerIsDown = false;
 
-    let bgmStarted = false;
-    let bgmInitialSeekDone = false;
     let firstInteractionDone = false;
 
-    bgm.volume = BGM_VOLUME;
-    bgm.loop = true;
+    let audioCtx = null;
+    let bgmBuffer = null;
+    let bgmSource = null;
+    let bgmGain = null;
+    let bgmStarted = false;
+    let bgmLoadingPromise = null;
 
     function ease(t) {
       return t * t * (3 - 2 * t);
@@ -160,7 +160,9 @@
     function setVideoSource(slot, index) {
       const src = VIDEO_FILES[index];
       const video = videos[slot];
+
       video.loop = true;
+      video.playsInline = true;
 
       if (video.dataset.src !== src) {
         video.src = src;
@@ -169,37 +171,88 @@
       }
     }
 
-    function seekBGMToStartTimeOnce() {
-      if (bgmInitialSeekDone) return;
-
-      function doSeek() {
-        try {
-          bgm.currentTime = BGM_START_TIME;
-        } catch (error) {}
-
-        bgmInitialSeekDone = true;
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       }
 
-      if (bgm.readyState >= 1) {
-        doSeek();
-      } else {
-        bgm.addEventListener("loadedmetadata", doSeek, { once: true });
+      return audioCtx;
+    }
+
+    function loadBGMBuffer() {
+      const ctx = getAudioContext();
+
+      if (bgmBuffer) {
+        return Promise.resolve(bgmBuffer);
       }
+
+      if (bgmLoadingPromise) {
+        return bgmLoadingPromise;
+      }
+
+      bgmLoadingPromise = fetch("./bgm.mp3")
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error("bgm.mp3 load failed");
+          }
+
+          return response.arrayBuffer();
+        })
+        .then(function (arrayBuffer) {
+          return ctx.decodeAudioData(arrayBuffer);
+        })
+        .then(function (buffer) {
+          bgmBuffer = buffer;
+          return buffer;
+        })
+        .catch(function (error) {
+          console.error("BGM load failed:", error);
+          throw error;
+        });
+
+      return bgmLoadingPromise;
+    }
+
+    function preloadBGM() {
+      loadBGMBuffer().catch(function () {});
     }
 
     function startBGM() {
-      bgm.volume = BGM_VOLUME;
-      bgm.loop = true;
+      if (bgmStarted) {
+        return;
+      }
 
-      seekBGMToStartTimeOnce();
+      const ctx = getAudioContext();
 
-      if (bgmStarted && !bgm.paused) return;
-
-      bgm.play()
+      ctx.resume()
         .then(function () {
+          return loadBGMBuffer();
+        })
+        .then(function (buffer) {
+          if (bgmStarted) {
+            return;
+          }
+
+          bgmGain = ctx.createGain();
+          bgmGain.gain.value = BGM_VOLUME;
+          bgmGain.connect(ctx.destination);
+
+          bgmSource = ctx.createBufferSource();
+          bgmSource.buffer = buffer;
+          bgmSource.loop = true;
+          bgmSource.connect(bgmGain);
+
+          const safeStartTime = Math.min(
+            BGM_START_TIME,
+            Math.max(0, buffer.duration - 0.1)
+          );
+
+          bgmSource.start(0, safeStartTime);
           bgmStarted = true;
         })
-        .catch(function () {});
+        .catch(function (error) {
+          console.error("BGM start failed:", error);
+        });
     }
 
     async function playSlot(slot, withSound) {
@@ -209,6 +262,7 @@
         video.currentTime = 0;
       } catch (error) {}
 
+      video.loop = true;
       video.muted = !withSound;
       video.volume = 1;
       video.playsInline = true;
@@ -284,11 +338,11 @@
       if (!firstInteractionDone) {
         firstInteractionDone = true;
 
-        // 第一次点击：只启动背景音乐 + 打开当前 01.mp4 的声音，不切换视频
         startBGM();
 
         videos[activeSlot].muted = false;
         videos[activeSlot].volume = 1;
+        videos[activeSlot].loop = true;
         videos[activeSlot].play().catch(function () {});
 
         return;
@@ -345,13 +399,19 @@
       setVideoSource(0, currentIndex);
 
       videos[0].muted = true;
+      videos[0].loop = true;
       videos[0].playsInline = true;
+
+      videos[1].muted = true;
+      videos[1].loop = true;
       videos[1].playsInline = true;
 
       showSlot(0);
       hideSlot(1);
 
       videos[0].play().catch(function () {});
+
+      preloadBGM();
     }
 
     init();
